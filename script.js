@@ -35,7 +35,7 @@ async function getQuotes() {
     newQuote();
   } catch (error) {
     console.log("error" + error);
-    // alert("No Quotes Found");
+    alert("No Quotes Found");
   }
 }
 
