@@ -14,29 +14,33 @@ function loading() {
 }
 
 function complete() {
-  quoteContainer.hidden = false;
-  loader.hidden = true;
+  if (!loader.hidden) {
+    quoteContainer.hidden = false;
+    loader.hidden = true;
+  }
 }
 
 function newQuote() {
   loading();
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
 
-  if (!quote.author) {
-    authorText.textContent = "Unkown";
-  } else {
-    authorText.textContent = quote.author;
+  try {
+    if (!quote.author) {
+      authorText.textContent = "Unkown";
+    } else {
+      authorText.textContent = quote.author;
+    }
+    if (quote.quote.length > 120) {
+      quoteText.classList.add("long-quote");
+    } else {
+      quoteText.classList.remove("long-quote");
+    }
+    //set quote, hide loader
+    quoteText.textContent = quote.quote;
+    complete();
+  } catch (error) {
+    console.log(error + "error");
   }
-
-  if (quote.quote.length > 120) {
-    quoteText.classList.add("long-quote");
-  } else {
-    quoteText.classList.remove("long-quote");
-  }
-
-  //set quote, hide loader
-  quoteText.textContent = quote.quote;
-  complete();
 }
 
 async function getQuotes() {
@@ -51,7 +55,7 @@ async function getQuotes() {
     newQuote();
   } catch (error) {
     console.log("error" + error);
-    alert("No Quotes Found");
+    getQuotes();
   }
 }
 
